@@ -10,4 +10,13 @@ const db = pgp({
 });
 
 console.log('yay you did the thing. wow.');
-console.log(db);
+// console.log(db);
+db.any(`
+select * from todos
+`)
+    .then((data) => {
+        console.log('here is the data:');
+        console.log(data);
+    })
+    .catch(() => {})
+
