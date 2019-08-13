@@ -1,13 +1,9 @@
 const db = require('../db');
 
 function getAll() {
-    db.any(`
-    select * from todos
-    `)
-        .then((data) => {
-            console.log('here is the data:');
-            console.log(data);
-        })
+    return db.any(`
+            select * from todos
+        `)
         .catch((error) => {
             console.log("UH OH.");
             console.log(error);
