@@ -25,5 +25,10 @@ app.get('/todos', (req, res) => {
     // res.end(allTodos);
 });
 
+app.get('/todos/:taskId', (req, res) => {
+    console.log("you asked for a specific task");
+    console.log(req.params.taskId);
+});
+
 // server.listen(3000);
 app.listen(port);
