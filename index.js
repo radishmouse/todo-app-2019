@@ -28,6 +28,14 @@ app.get('/todos', (req, res) => {
 app.get('/todos/:taskId', (req, res) => {
     console.log("you asked for a specific task");
     console.log(req.params.taskId);
+
+    // convert the route param to a number
+    // and make sure it's in "base 10"
+    const theId = parseInt(req.params.taskId, 10);
+    const aTodo = Todo.getOne(theId);
+    aTodo.then((data) => {
+        res.json(data);
+    });
 });
 
 // server.listen(3000);

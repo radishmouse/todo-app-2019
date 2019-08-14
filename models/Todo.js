@@ -19,13 +19,13 @@ function getOne(id) {
     // inside your .then().
     // .one() will throw an exception if it
     // gets anything but 1 and only 1 result.
-    db.one(`
+    return db.one(`
         select * from todos where id=$1
     `, [id])
-    .then((data) => {
-        console.log('here is the data:');
-        console.log(data);
-    })
+    // .then((data) => {
+    //     console.log('here is the data:');
+    //     console.log(data);
+    // })
     .catch((error) => {
         console.log("UH OH.");
         console.log(error);
