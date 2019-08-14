@@ -11,6 +11,11 @@ const port = 3000;
 // const server = http.createServer((req, res) => {
 // Replace with app.get()
 app.get('/todos', (req, res) => {
+
+    // "debugger" keyword adds a programmatic breakpoint
+    // for the Chrome Dev Tools:
+    // debugger;
+
     console.log("You've got a request!");
     const allTodos = Todo.getAll();
     allTodos        
