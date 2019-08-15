@@ -4,13 +4,26 @@ const db = require('../db');
 
 // 2. Cook.
 async function getAll() {
-    const users = await db.any(`
-        select * from users
-    `);
-    console.log("We got users!");
+    const users = await db.any(`SELECT * FROM users`);
 
-    return users;
+    const arrayOfPromises = users.map( async user => {
+        const userTodos = await db.any(`SELECT * FROM todos WHERE user_id = $1`, [user.id])
+        user.todos = userTodos
+        return user;
+    })
+
+    const arrayOfUsersWithTodos = await Promise.all(arrayOfPromises);
+
+    return arrayOfUsersWithTodos;
 }
+// async function getAll() {
+//     const users = await db.any(`
+//         select * from users
+//     `);
+//     console.log("We got users!");
+
+//     return users;
+// }
 
 // Here's what we want from getOne():
 // {

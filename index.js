@@ -45,21 +45,15 @@ app.get('/todos/:taskId', (req, res) => {
         });
 });
 
-app.get('/users', (req, res) => {
-    const allUsers = User.getAll();
-    allUsers
-        .then((data) => {
-            res.json(data);
-        })
+app.get('/users', async (req, res) => {
+    const allUsers = await User.getAll();
+    res.json(allUsers);
 });
 
-app.get('/users/:userId', (req, res) => {
+app.get('/users/:userId', async (req, res) => {
     const theId = parseInt(req.params.userId, 10);
-    const aUser = User.getOne(theId);
-    aUser
-        .then((data) => {
-            res.json(data);
-        });
+    const aUser = await User.getOne(theId);
+    res.json(aUser);
 });
 
 // server.listen(3000);
