@@ -31,16 +31,14 @@ function getOne(id) {
     `, [id])
     .then((user) => {
         // get the Todos for this user.
-        const todos = db.any(`
+        return db.any(`
             select * from todos where user_id=$1
         `, [id])
         .then((todosForUser) => {
             console.log(todosForUser);
             user.todos = todosForUser;
             return user;
-        })
-
-        return todos;
+        });
     })
     .catch((error) => {
         console.log("Error getting user");
