@@ -3,14 +3,13 @@ const db = require('../db');
 
 
 // 2. Cook.
-function getAll() {
-    return db.any(`
+async function getAll() {
+    const users = await db.any(`
         select * from users
-    `)
-    .catch((error) => {
-        console.log("Error getting users.");
-        console.log(error);
-    })
+    `);
+    console.log("We got users!");
+
+    return users;
 }
 
 // Here's what we want from getOne():
@@ -25,25 +24,25 @@ function getAll() {
 //     ]
 // }
 
-function getOne(id) {
-    return db.one(`
-        select * from users where id=$1
-    `, [id])
-    .then((user) => {
-        // get the Todos for this user.
-        return db.any(`
+async function getOne(id) {
+    try {
+        const user = await db.one(`
+            select * from users where id=$1
+        `, [id]);
+        
+        const todosForUser = await db.any(`
             select * from todos where user_id=$1
-        `, [id])
-        .then((todosForUser) => {
-            console.log(todosForUser);
-            user.todos = todosForUser;
-            return user;
-        });
-    })
-    .catch((error) => {
-        console.log("Error getting user");
-        console.log(error);
-    })
+        `, [user.id]);
+    
+        user.todos = todosForUser;
+        return user;
+    } catch (error) {
+        console.log("There was an error retreiving user!");
+        return {
+            id: 0,
+            displayname: "No user found"
+        };
+    }
 }
 
 // 3. Serve.
