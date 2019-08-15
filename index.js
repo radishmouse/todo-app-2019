@@ -2,6 +2,7 @@
 // Replace http with express
 const express = require('express');
 const Todo = require('./models/Todo');
+const User = require('./models/User');
 
 // Create the server and call it "app"
 const app = express();
@@ -38,9 +39,27 @@ app.get('/todos/:taskId', (req, res) => {
     // and make sure it's in "base 10"
     const theId = parseInt(req.params.taskId, 10);
     const aTodo = Todo.getOne(theId);
-    aTodo.then((data) => {
-        res.json(data);
-    });
+    aTodo
+        .then((data) => {
+            res.json(data);
+        });
+});
+
+app.get('/users', (req, res) => {
+    const allUsers = User.getAll();
+    allUsers
+        .then((data) => {
+            res.json(data);
+        })
+});
+
+app.get('/users/:userId', (req, res) => {
+    const theId = parseInt(req.params.userId, 10);
+    const aUser = User.getOne(theId);
+    aUser
+        .then((data) => {
+            res.json(data);
+        });
 });
 
 // server.listen(3000);
