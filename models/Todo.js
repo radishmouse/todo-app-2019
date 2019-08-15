@@ -1,16 +1,17 @@
 const db = require('../db');
 
-function getAll() {
-    return db.any(`
+async function getAll() {
+    try {
+        return await db.any(`
             select * from todos
-        `)
-        .catch((error) => {
-            console.log("UH OH.");
-            console.log(error);
-        })
+        `);
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
 }
 
-function getOne(id) {
+async function getOne(id) {
     // When you want one and only one,
     // use the .one() method.
     // That way, if you don't find it,
@@ -19,17 +20,17 @@ function getOne(id) {
     // inside your .then().
     // .one() will throw an exception if it
     // gets anything but 1 and only 1 result.
-    return db.one(`
-        select * from todos where id=$1
-    `, [id])
-    // .then((data) => {
-    //     console.log('here is the data:');
-    //     console.log(data);
-    // })
-    .catch((error) => {
+    try {
+        const aTodo = await db.one(`
+            select * from todos where id=$1
+        `, [id]);
+        // debugger;
+        return aTodo;
+    } catch (error) {
         console.log("UH OH.");
         console.log(error);
-    })
+        return {};
+    }
 }
 
 module.exports = {
