@@ -56,10 +56,14 @@ app.get('/users/:userId', async (req, res) => {
     res.json(aUser);
 });
 
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     console.log("We got a POST request");
     // .send() is different from .end()
     res.send("good job");
+    const newUserInfo = await User.createUser({
+        displayname: "lalalalala",
+        username: "zazazazazazaza"
+    });
 });
 
 // server.listen(3000);
