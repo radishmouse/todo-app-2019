@@ -56,5 +56,11 @@ app.get('/users/:userId', async (req, res) => {
     res.json(aUser);
 });
 
+app.post('/users', (req, res) => {
+    console.log("We got a POST request");
+    // .send() is different from .end()
+    res.send("good job");
+});
+
 // server.listen(3000);
 app.listen(port);

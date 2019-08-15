@@ -87,5 +87,6 @@ async function createUser({ displayname, username }) {
 // 3. Serve.
 module.exports = {
     getAll,
-    getOne
+    getOne,
+    createUser
 };
