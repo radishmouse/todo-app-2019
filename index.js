@@ -11,6 +11,13 @@ const app = express();
 // to read POST bodies
 app.use(express.urlencoded({extended: true}));
 
+app.use((req, res, next) => {
+    console.log("I am middleware. yay.");
+    console.log(req.url);
+    // res.send("sorry");
+    next();
+});
+
 // Create a variable for the port#
 const port = 3000;
 
@@ -64,16 +71,25 @@ app.get('/users/:userId', async (req, res) => {
 app.post('/users', async (req, res) => {
     console.log("We got a POST request");
     // .send() is different from .end()
-    res.send("good job");
-
+    
     console.log("Here is the body:");
     console.log(req.body);
+    const newUserInfo = await User.createUser(req.body);
+    res.json(newUserInfo);
 
-    const newUserInfo = await User.createUser({
-        displayname: "lalalalala",
-        username: "zazazazazazaza"
-    });
+    // const newUserInfo = await User.createUser({
+    //     displayname: req.body.displayname,
+    //     username: req.body.username
+    // });
 });
+
+/*
+Exercise: Add a POST route for creating todos for a specific user.
+
+
+Suggested format for route string:
+*/
+// app.post('/users/:userId/todos')
 
 // server.listen(3000);
 app.listen(port);
