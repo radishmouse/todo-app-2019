@@ -30,6 +30,9 @@ app.get('/', (req, res) => {
     res.render('index', {
         locals: {
             message: "It is time for lunch"
+        },
+        partials: {
+            navbar: 'navbar'
         }
     });
 });
