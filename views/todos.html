@@ -11,8 +11,11 @@
     ${navbar}
     
     <ul>
-        <li>Do the thing</li>
-        <li>Thing do thing</li>
+        ${
+            todos.map((t) => {
+                return `<li>${t.priority}: ${t.task}</li>`
+            }).join('')
+        }
     </ul>
 </body>
 </html>

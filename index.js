@@ -52,9 +52,14 @@ app.get('/profile', (req, res) => {
     });
 });
 
-app.get('/profile/todos', (req, res) => {
+app.get('/profile/todos', async (req, res) => {
+    const userId = 1; // Using hard coded id for now.
+    const theUser = await User.getOne(userId);
+
     res.render('todos', {
-        locals: {},
+        locals: {
+            todos: theUser.todos
+        },
         partials: {
             navbar: 'navbar',
             includes: 'includes'
@@ -87,8 +92,7 @@ app.post('/profile/todos/create', [
     // When you log into a site, it keeps track of your
     // id for you.
     const taskId = await Todo.create(req.body.user_id, req.body);
-    res.send(taskid);
-
+    res.send(taskId);
 });
 
 
