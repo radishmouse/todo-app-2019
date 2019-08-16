@@ -33,9 +33,24 @@ async function getOne(id) {
     }
 }
 
+function create(userId, todoObj) {
+    const { task } = todoObj;
+    const todoId = db.one(`
+        insert into todos 
+            (priority, task, user_id)
+        values 
+            (1, $2, $1)
+    
+        returning id        
+    `, [userId, task]);
+
+    return todoId;
+}
+
 module.exports = {
     // This is the same as
     // getAll: getAll,
     getAll,
     getOne,
+    create,
 };

@@ -12,6 +12,10 @@ app.engine('html', es6Renderer);
 app.set('views', 'views');
 app.set('view engine', 'html');
 
+// "static assets" like CSS, JS, and images
+// will go in a directory named "public"
+app.use(express.static('public'));
+
 // Use the urlencoded middleware
 // to read POST bodies
 app.use(express.urlencoded({extended: true}));
@@ -32,7 +36,8 @@ app.get('/', (req, res) => {
             message: "It is time for lunch"
         },
         partials: {
-            navbar: 'navbar'
+            navbar: 'navbar',
+            includes: 'includes'
         }
     });
 });
@@ -41,7 +46,8 @@ app.get('/profile', (req, res) => {
     res.render('profile', {
         locals: {},
         partials: {
-            navbar: 'navbar'
+            navbar: 'navbar',
+            includes: 'includes'
         }
     });
 });
@@ -50,10 +56,44 @@ app.get('/profile/todos', (req, res) => {
     res.render('todos', {
         locals: {},
         partials: {
-            navbar: 'navbar'
+            navbar: 'navbar',
+            includes: 'includes'
         }
     });
 });
+
+
+// 1. Allow the user to GET the form for creating a todo
+app.get('/profile/todos/create', (req, res) => {
+    // Render the "create new todo" form template
+    res.render('create-todo', {
+        partials: {
+            navbar: 'navbar',
+            includes: 'includes'
+        }        
+    });
+});
+
+
+// 2. Process the body of the form they POST
+app.post('/profile/todos/create', [
+    sanitizeBody('task').escape()
+], async (req, res) => {
+    // Handle the req.body from the "create new todo" form
+
+    console.log(req.body);
+
+    // normally, we don't include the user id in the form.
+    // When you log into a site, it keeps track of your
+    // id for you.
+    const taskId = await Todo.create(req.body.user_id, req.body);
+    res.send(taskid);
+
+});
+
+
+
+
 
 // const server = http.createServer((req, res) => {
 // Replace with app.get()
