@@ -3,9 +3,14 @@
 const express = require('express');
 const Todo = require('./models/Todo');
 const User = require('./models/User');
+const { sanitizeBody } = require('express-validator');
+const es6Renderer = require('express-es6-template-engine');
 
 // Create the server and call it "app"
 const app = express();
+app.engine('html', es6Renderer);
+app.set('views', 'views');
+app.set('view engine', 'html');
 
 // Use the urlencoded middleware
 // to read POST bodies
@@ -20,6 +25,14 @@ app.use((req, res, next) => {
 
 // Create a variable for the port#
 const port = 3000;
+
+app.get('/', (req, res) => {
+    res.render('index', {
+        locals: {
+            message: "It is time for lunch"
+        }
+    });
+});
 
 // const server = http.createServer((req, res) => {
 // Replace with app.get()
@@ -68,7 +81,10 @@ app.get('/users/:userId', async (req, res) => {
     res.json(aUser);
 });
 
-app.post('/users', async (req, res) => {
+app.post('/users', [
+    sanitizeBody('username').escape(),
+    sanitizeBody('displayname').escape()
+], async (req, res) => {
     console.log("We got a POST request");
     // .send() is different from .end()
     
@@ -84,7 +100,8 @@ app.post('/users', async (req, res) => {
 });
 
 /*
-Exercise: Add a POST route for creating todos for a specific user.
+Exercise: Add a POST route for creating todos for an existing user.
+In the response, return the id of the new Todo.
 
 
 Suggested format for route string:
