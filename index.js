@@ -37,6 +37,24 @@ app.get('/', (req, res) => {
     });
 });
 
+app.get('/profile', (req, res) => {
+    res.render('profile', {
+        locals: {},
+        partials: {
+            navbar: 'navbar'
+        }
+    });
+});
+
+app.get('/profile/todos', (req, res) => {
+    res.render('todos', {
+        locals: {},
+        partials: {
+            navbar: 'navbar'
+        }
+    });
+});
+
 // const server = http.createServer((req, res) => {
 // Replace with app.get()
 app.get('/todos', (req, res) => {
